@@ -1,4 +1,0 @@
-{
-  "name": "hipsterdomains",
-  "parts": ["express", "angular", "stylus"]
-}

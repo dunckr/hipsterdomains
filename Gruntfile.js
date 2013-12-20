@@ -1,538 +1,468 @@
+// Generated on 2013-12-20 using generator-angular-fullstack 1.0.1
+'use strict';
+
+// # Globbing
+// for performance reasons we're only matching one level down:
+// 'test/spec/{,*/}*.js'
+// use this if you want to recursively match all subfolders:
+// 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
-  // Loading all tasks:
+
+  // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
-  var pkg = require('./package'),
-      klei = require('./klei'),
-      modulename = klei.name || pkg.title || pkg.name;
+  // Time how long tasks take. Can help when optimizing build times
+  require('time-grunt')(grunt);
 
+  // Define the configuration for all the tasks
   grunt.initConfig({
-    pkg: pkg,
-    modulename: modulename,
 
-    /**
-     * Source dirs
-     */
-    dirs: {
-      src: 'src',
-      app: 'src/app',
-      api: 'src/api',
-      styles: 'src/styles',
-      dist: 'dist',
-      temp: '.tmp'
+    // Project settings
+    yeoman: {
+      // configurable paths
+      app: require('./bower.json').appPath || 'app',
+      dist: 'public',
+      views: 'views'
     },
-
-    
-    /**
-     * Banner for top of concatenated CSS and Javascript
-     */
-    meta: {
-      banner: '/**\n' +
-        ' * <%= modulename %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        ' *\n' +
-        ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
-        ' */\n'
-    },
-
-    /**
-     * Clean up
-     */
-    clean: {
-      dist: {
-        files: [{
-          src: [
-            '<%= dirs.temp %>',
-            '<%= dirs.dist %>'
-          ]
-        }]
-      },
-      temp: '<%= dirs.temp %>'
-    },
-
-    /**
-     * Server
-     */
-    'express': {
+    express: {
       options: {
-        port: 1337,
-        open: false,
-        livereload: false,
-        // change this to '0.0.0.0' to access the server from outside
-        hostname: '*'
+        port: process.env.PORT || 9000
       },
-      livereload: {
+      dev: {
         options: {
-          livereload: 35729,
-          serverreload: true,
-          showStack: true,
-          server: '<%= dirs.src %>/index.js',
-          bases: [
-            'bower_components',
-            '<%= dirs.temp %>',
-            '<%= dirs.app %>',
-            '<%= dirs.dist %>'
-          ]
+          script: 'server.js'
         }
       },
-      dist: {
+      prod: {
         options: {
-          open: true,
-          server: '<%= dirs.src %>/index.js',
-          bases: [
-            'bower_components',
-            '<%= dirs.dist %>'
-          ]
+          script: 'server.js',
+          node_env: 'production'
         }
       }
     },
-
-    /**
-     * Watch files and do stuff
-     */
+    open: {
+      server: {
+        url: 'http://localhost:<%= express.options.port %>'
+      }
+    },
     watch: {
-      base: {
-        files: ['<%= dirs.api %>/**/*.js'],
-        tasks: ['newer:jshint:base', 'newer:jshint:api']
+      coffee: {
+        files: ['<%= yeoman.app %>/scripts/{,*/}*.{coffee,litcoffee,coffee.md}'],
+        tasks: ['newer:coffee:dist']
       },
-      styles: {
-        files: ['<%= dirs.styles %>/**/*.styl', '<%= dirs.app %>/**/*.styl'],
-        tasks: ['newer:stylus', 'newer:csslint', 'injector:app', 'injector:styleguide']
+      coffeeTest: {
+        files: ['test/spec/{,*/}*.{coffee,litcoffee,coffee.md}'],
+        tasks: ['newer:coffee:test', 'karma']
       },
-      styleguide: {
-        files: ['<%= dirs.styles %>/styleguide.html'],
-        tasks: ['copy:styleguide']
+      compass: {
+        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        tasks: ['compass:server', 'autoprefixer']
       },
-      templates: {
-        files: ['<%= dirs.app %>/**/*.html', '!<%= dirs.app %>/<%= modulename %>.html'],
-        tasks: ['html2js:app', 'injector:app']
-      },
-      index: {
-        files: ['<%= dirs.app %>/<%= modulename %>.html'],
-        tasks: ['copy:index']
-      },
-      app: {
-        files: ['<%= dirs.app %>/**/*.js', '!<%= dirs.app %>/**/*.spec.js'],
-        tasks: ['injector:app', 'newer:jshint:app']
-      },
-    },
-
-    
-    concurrent: {
       livereload: {
-        options: {
-          logConcurrentOutput: true
-        },
-        tasks: [
-          'watch',
-          'express:livereload'
-        ]
-      }
-    },
-
-    
-    /**
-     * Compile Stylus to CSS
-     */
-    stylus: {
-      options: {
-        compress: false
-      },
-      base: {
-        files: [{
-          expand: true,
-          cwd: '<%= dirs.styles %>',
-          src: ['{,*/}*.styl', '!{,*/}_*.styl'],
-          dest: '<%= dirs.temp %>/css',
-          ext: '.css'
-        }]
-      },
-      app: {
-        files: [{
-          expand: true,
-          cwd: '<%= dirs.app %>',
-          src: ['**/*.styl', '!**/_*.styl'],
-          dest: '<%= dirs.temp %>/css',
-          ext: '.css'
-        }]
-      }
-    },
-
-    /**
-     * Lint CSS
-     */
-    csslint: {
-      options: {
-        csslintrc: '.csslintrc'
-      },
-      all: {
-        files: [{
-          expand: true,
-          cwd: '<%= dirs.temp %>/css',
-          src: ['**/*.css'],
-          ext: '.css'
-        }]
-      }
-    },
-
-    /**
-     * Minify CSS
-     */
-    cssmin: {
-      options: {
-        banner: '<%= meta.banner %>'
-      },
-      dist: {
-        files: {
-          '<%= dirs.dist %>/<%= modulename %>.min.css': [ '<%= dirs.dist %>/<%= modulename %>.css' ]
-        }
-      }
-    },
-
-    /**
-     * Minify HTML templates for dist
-     */
-    htmlmin: {
-      dist: {
-        options: {
-          // removeCommentsFromCDATA: true,
-          collapseWhitespace: true,
-          removeEmptyAttributes: true,
-          collapseBooleanAttributes: true
-          // removeAttributeQuotes: true,
-          // removeRedundantAttributes: true,
-          // useShortDoctype: true,
-          // removeOptionalTags: true
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= dirs.app %>',
-          src: ['**/*.html', '!<%= modulename %>.html'],
-          dest: '<%= dirs.temp %>'
-        }]
-      }
-    },
-
-    /**
-     * Compile AngularJS html templates to Javascript and inject into $templateCache
-     */
-    html2js: {
-      app: {
-        options: {
-          module: '<%= modulename %>Templates',
-          base: '<%= dirs.app %>',
-          rename: function (template) {
-            return '/' + modulename + '/' + template;
-          }
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= dirs.app %>',
-          src: ['**/*.html', '!<%= modulename %>.html'],
-          dest: '<%= dirs.temp %>',
-          rename: function () {
-            return '<%= dirs.temp %>/<%= modulename %>Templates.js';
-          }
-        }]
-      },
-      dist: {
-        options: {
-          module: '<%= modulename %>Templates',
-          base: '<%= dirs.temp %>',
-          rename: function (template) {
-            return '/' + modulename + '/' + template;
-          }
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= dirs.temp %>',
-          src: ['**/*.html'],
-          dest: '<%= dirs.temp %>',
-          rename: function () {
-            return '<%= dirs.temp %>/<%= modulename %>Templates.js';
-          }
-        }]
-      }
-    },
-
-    /**
-     * Dependency injection annotation for AngularJS modules
-     */
-    ngmin: {
-      dist: {
-        src: [ '<%= dirs.dist %>/<%= modulename %>.js' ],
-        dest: '<%= dirs.dist %>/<%= modulename %>.annotated.js'
-      }
-    },
-
-    /**
-     * Minify Javascripts
-     */
-    uglify: {
-      options: {
-        banner: '<%= meta.banner %>'
-      },
-      dist: {
-        files: {
-          '<%= dirs.dist %>/<%= modulename %>.min.js': [ '<%= dirs.dist %>/<%= modulename %>.annotated.js' ]
-        }
-      }
-    },
-
-    /**
-     * The Karma configurations.
-     */
-    karma: {
-      options: {
-        configFile: 'karma.conf.js'
-      },
-      unit: {
-        background: true
-      },
-      continuous: {
-        singleRun: true
-      }
-    },
-
-    /**
-     * Mocha Cli configuration
-     */
-    mochacli: {
-      options: {
-        reporter: 'spec',
-        ui: 'bdd'
-      },
-      api_unit: ['<%= dirs.api %>/**/*.spec.js'],
-      api_continuous: {
-        options: {
-          bail: true,
-        },
-        src: ['<%= dirs.api %>/**/*.spec.js']
-      }
-    },
-
-    /**
-     * The `injector` task injects all scripts/stylesheets into the `index.html` file
-     */
-    injector: {
-      options: {
-        destFile: '<%= dirs.app %>/<%= modulename %>.html'
-      },
-      styleguide: {
-        options: {
-          destFile: '<%= dirs.styles %>/styleguide.html'
-        },
         files: [
-          {src: ['bower.json']},
-          {
-            expand: true,
-            cwd: '<%= dirs.temp %>',
-            src: ['**/*.css']
-          }
-        ]
-      },
-      styleguideMin: {
-        options: {
-          min: true,
-          destFile: '<%= dirs.styles %>/styleguide.html'
-        },
-        src: ['bower.json', '<%= dirs.dist %>/<%= modulename %>.min.css']
-      },
-
-      karmaconf: {
-        options: {
-          destFile: 'karma.conf.js',
-          starttag: '/** injector **/',
-          endtag: '/** endinjector **/',
-          transform: function (file) { return '\'' + file.slice(1) + '\','; }
-        },
-        files: [
-          {
-            src: [
-              'bower.json',
-              'bower_components/angular-mocks/angular-mocks.js'
-            ]
-          },
-          {
-            expand: true,
-            cwd: '<%= dirs.app %>',
-            src: ['<%= modulename %>.js', '**/index.js', '**/*.js', '!**/*.spec.js']
-          },
-          {
-            expand: true,
-            cwd: '<%= dirs.temp %>',
-            src: ['*.js']
-          },
-          {
-            expand: true,
-            cwd: '<%= dirs.app %>',
-            src: ['**/*.spec.js']
-          }
-        ]
-      },
-
-      /**
-       * Inject all needed files during development to not
-       * have to wait for minification, concatination, etc.
-       */
-      app: {
-        options: {
-          ignorePath: ['<%= dirs.app %>', '<%= dirs.temp %>']
-        },
-        files: [
-          {
-            expand: true,
-            cwd: '<%= dirs.app %>',
-            src: ['<%= modulename %>.js', '**/index.js', '**/*.js', '!**/*.spec.js']
-          },
-          {
-            expand: true,
-            cwd: '<%= dirs.temp %>',
-            src: ['*.js', '**/*.css']
-          }
-        ]
-      },
-
-      /**
-       * Use concatenated and minified sources for dist mode
-       */
-      dist: {
-        options: {
-          min: true,
-          ignorePath: 'dist'
-        },
-        src: [
-          '<%= dirs.dist %>/<%= modulename %>.min.js',
-          '<%= dirs.dist %>/<%= modulename %>.min.css'
-        ]
-      },
-
-      bower: {
-        options: {
-          ignorePath: 'bower_components'
-        },
-        src: ['bower.json']
-      },
-      bowerMin: {
-        options: {
-          min: true,
-          ignorePath: 'bower_components'
-        },
-        src: ['bower.json']
-      }
-    },
-
-    copy: {
-      index: {
-        src: '<%= dirs.app %>/<%= modulename %>.html',
-        dest: '<%= dirs.dist %>/index.html'
-      },
-      styleguide: {
-        src: '<%= dirs.styles %>/styleguide.html',
-        dest: '<%= dirs.dist %>/styleguide.html'
-      }
-    },
-
-    /**
-     * Concat all source files
-     */
-    concat: {
-      options: {
-        banner: '<%= meta.banner %>'
-      },
-      app: {
-        src: [
-          '<%= dirs.app %>/<%= modulename %>.js',
-          '<%= dirs.app %>/**/index.js',
-          '<%= dirs.app %>/**/*.js',
-          '<%= dirs.temp %>/*.js',
-          '!<%= dirs.app %>/**/*.spec.js'
+          '<%= yeoman.app %>/<%= yeoman.views %>/{,*//*}*.{html,jade}',
+          '{.tmp,<%= yeoman.app %>}/styles/{,*//*}*.css',
+          '{.tmp,<%= yeoman.app %>}/scripts/{,*//*}*.js',
+          '<%= yeoman.app %>/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}',
         ],
-        dest: '<%= dirs.dist %>/<%= modulename %>.js'
+        options: {
+          livereload: true
+        }
+      },
+      express: {
+        files: [
+          'server.js',
+          'lib/{,*//*}*.{js,json}'
+        ],
+        tasks: ['express:dev'],
+        options: {
+          livereload: true,
+          nospawn: true //Without this option specified express won't be reloaded
+        }
       },
       styles: {
-        src: [
-          '<%= dirs.temp %>/**/*.css'
-        ],
-        dest: '<%= dirs.dist %>/<%= modulename %>.css'
+        files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
+        tasks: ['newer:copy:styles', 'autoprefixer']
+      },
+      gruntfile: {
+        files: ['Gruntfile.js']
       }
     },
-    
 
-    /**
-     * Lint Javascript
-     */
+    // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
       options: {
         jshintrc: '.jshintrc',
         reporter: require('jshint-stylish')
       },
-      base: [
-        'Gruntfile.js'
-      ],
-      app: {
+      all: [
+      ]
+    },
+
+    // Empties folders to start fresh
+    clean: {
+      dist: {
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%= yeoman.views %>/*',
+            '<%= yeoman.dist %>/*',
+            '!<%= yeoman.dist %>/.git*'
+          ]
+        }]
+      },
+      heroku: {
+        files: [{
+          dot: true,
+          src: [
+            'heroku/*',
+            '!heroku/.git*',
+            '!heroku/Procfile'
+          ]
+        }]
+      },
+      server: '.tmp'
+    },
+
+    // Add vendor prefixed styles
+    autoprefixer: {
+      options: {
+        browsers: ['last 1 version']
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/styles/',
+          src: '{,*/}*.css',
+          dest: '.tmp/styles/'
+        }]
+      }
+    },
+
+    
+    // Compiles CoffeeScript to JavaScript
+    coffee: {
+      options: {
+        sourceMap: true,
+        sourceRoot: ''
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/scripts',
+          src: '{,*/}*.coffee',
+          dest: '.tmp/scripts',
+          ext: '.js'
+        }]
+      },
+      test: {
+        files: [{
+          expand: true,
+          cwd: 'test/spec',
+          src: '{,*/}*.coffee',
+          dest: '.tmp/spec',
+          ext: '.js'
+        }]
+      }
+    },
+
+    
+    // Compiles Sass to CSS and generates necessary files if requested
+    compass: {
+      options: {
+        sassDir: '<%= yeoman.app %>/styles',
+        cssDir: '.tmp/styles',
+        generatedImagesDir: '.tmp/images/generated',
+        imagesDir: '<%= yeoman.app %>/images',
+        javascriptsDir: '<%= yeoman.app %>/scripts',
+        fontsDir: '<%= yeoman.app %>/styles/fonts',
+        importPath: '<%= yeoman.app %>/bower_components',
+        httpImagesPath: '/images',
+        httpGeneratedImagesPath: '/images/generated',
+        httpFontsPath: '/styles/fonts',
+        relativeAssets: false,
+        assetCacheBuster: false
+      },
+      dist: {
         options: {
-          jshintrc: '<%= dirs.app %>/.jshintrc'
+          generatedImagesDir: '<%= yeoman.dist %>/images/generated'
+        }
+      },
+      server: {
+        options: {
+          debugInfo: true
+        }
+      }
+    },
+
+    // Renames files for browser caching purposes
+    rev: {
+      dist: {
+        files: {
+          src: [
+            '<%= yeoman.dist %>/scripts/{,*/}*.js',
+            '<%= yeoman.dist %>/styles/{,*/}*.css',
+            '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+            '<%= yeoman.dist %>/styles/fonts/*'
+          ]
+        }
+      }
+    },
+
+    // Reads HTML for usemin blocks to enable smart builds that automatically
+    // concat, minify and revision files. Creates configurations in memory so
+    // additional tasks can operate on them
+    useminPrepare: {
+      html: ['<%= yeoman.app %>/<%= yeoman.views %>/index.html',
+             '<%= yeoman.app %>/<%= yeoman.views %>/index.jade'],
+      options: {
+        dest: '<%= yeoman.dist %>'
+      }
+    },
+
+    // Performs rewrites based on rev and the useminPrepare configuration
+    usemin: {
+      html: ['<%= yeoman.views %>/{,*/}*.html',
+             '<%= yeoman.views %>/{,*/}*.jade'],
+      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      options: {
+        assetsDirs: ['<%= yeoman.dist %>']
+      }
+    },
+
+    // The following *-min tasks produce minified files in the dist folder
+    imagemin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/images',
+          src: '{,*/}*.{png,jpg,jpeg,gif}',
+          dest: '<%= yeoman.dist %>/images'
+        }]
+      }
+    },
+    svgmin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/images',
+          src: '{,*/}*.svg',
+          dest: '<%= yeoman.dist %>/images'
+        }]
+      }
+    },
+    htmlmin: {
+      dist: {
+        options: {
+          // Optional configurations that you can uncomment to use
+          // removeCommentsFromCDATA: true,
+          // collapseBooleanAttributes: true,
+          // removeAttributeQuotes: true,
+          // removeRedundantAttributes: true,
+          // useShortDoctype: true,
+          // removeEmptyAttributes: true,
+          // removeOptionalTags: true*/
         },
         files: [{
           expand: true,
-          cwd: '<%= dirs.app %>',
-          src: ['<%= modulename %>.js', '**/index.js', '**/*.js'],
-          dest: '<%= dirs.app %>'
+          cwd: '<%= yeoman.app %>/<%= yeoman.views %>',
+          src: ['*.html', 'partials/*.html'],
+          dest: '<%= yeoman.views %>'
+        }]
+      }
+    },
+
+    // Allow the use of non-minsafe AngularJS files. Automatically makes it
+    // minsafe compatible so Uglify does not destroy the ng references
+    ngmin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/concat/scripts',
+          src: '*.js',
+          dest: '.tmp/concat/scripts'
+        }]
+      }
+    },
+
+    // Replace Google CDN references
+    cdnify: {
+      dist: {
+        html: ['<%= yeoman.views %>/*.html']
+      }
+    },
+
+    // Copies remaining files to places other tasks can use
+    copy: {
+      dist: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            '*.{ico,png,txt}',
+            '.htaccess',
+            'bower_components/**/*',
+            'images/{,*/}*.{webp}',
+            'fonts/*'
+          ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>/<%= yeoman.views %>',
+          dest: '<%= yeoman.views %>',
+          src: '**/*.jade',
+        }, {
+          expand: true,
+          cwd: '.tmp/images',
+          dest: '<%= yeoman.dist %>/images',
+          src: [
+            'generated/*'
+          ]
         }]
       },
-      api: [
-        '<%= dirs.api %>/**/*.js'
+      heroku: {
+        files: [{
+          expand: true,
+          dot: true,
+          dest: 'heroku',
+          src: [
+            '<%= yeoman.dist %>/**',
+            '<%= yeoman.views %>/**'
+          ]
+        }, {
+          expand: true,
+          dest: 'heroku',
+          src: [
+            'package.json',
+            'server.js',
+            'lib/**/*'
+          ]
+        }]
+      },  
+      styles: {
+        expand: true,
+        cwd: '<%= yeoman.app %>/styles',
+        dest: '.tmp/styles/',
+        src: '{,*/}*.css'
+      }
+    },
+
+    // Run some tasks in parallel to speed up the build process
+    concurrent: {
+      server: [
+        'coffee:dist',
+        'compass:server',
+        'copy:styles'
+      ],
+      test: [
+        'coffee',
+        'compass',
+        'copy:styles'
+      ],
+      dist: [
+        'coffee',
+        'compass:dist',
+        'copy:styles',
+        'imagemin',
+        'svgmin',
+        'htmlmin'
       ]
+    },
+
+    // By default, your `index.html`'s <!-- Usemin block --> will take care of
+    // minification. These next options are pre-configured if you do not wish
+    // to use the Usemin blocks.
+    // cssmin: {
+    //   dist: {
+    //     files: {
+    //       '<%= yeoman.dist %>/styles/main.css': [
+    //         '.tmp/styles/{,*/}*.css',
+    //         '<%= yeoman.app %>/styles/{,*/}*.css'
+    //       ]
+    //     }
+    //   }
+    // },
+    // uglify: {
+    //   dist: {
+    //     files: {
+    //       '<%= yeoman.dist %>/scripts/scripts.js': [
+    //         '<%= yeoman.dist %>/scripts/scripts.js'
+    //       ]
+    //     }
+    //   }
+    // },
+    // concat: {
+    //   dist: {}
+    // },
+
+    // Test settings
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        singleRun: true
+      }
     }
+  });
+
+  grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
+    this.async();
   });
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['dist', 'express:dist', 'express-keepalive']);
+      return grunt.task.run(['build', 'express:prod', 'open', 'express-keepalive']);
     }
+
     grunt.task.run([
-      'build',
-      'concurrent:livereload'
+      'clean:server',
+      'concurrent:server',
+      'autoprefixer',
+      'express:dev',
+      'open',
+      'watch'
     ]);
   });
 
-  grunt.registerTask('test', ['build', 'injector:karmaconf', 'karma:continuous', 'mochacli:api_continuous']);
+  grunt.registerTask('server', function () {
+    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+    grunt.task.run(['serve']);
+  });
 
-  grunt.registerTask('build', [
-    'clean',
-    'html2js:app',
-    'stylus:base',
-    'stylus:app',
-    'csslint',
-    'injector:styleguide',
-    'copy:styleguide',
-    'injector:bower',
-    'injector:app',
-    'copy:index'
+  grunt.registerTask('test', [
+    'clean:server',
+    'concurrent:test',
+    'autoprefixer',
+    'karma'
   ]);
 
-  grunt.registerTask('dist', [
-    'clean',
-    'htmlmin:dist',
-    'html2js:dist',
-    'concat:app',
-    'stylus:base',
-    'stylus:app',
-    'csslint',
-    'concat:styles',
-    'cssmin',
-    'injector:styleguideMin',
-    'copy:styleguide',
+  grunt.registerTask('build', [
+    'clean:dist',
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'concat',
     'ngmin',
+    'copy:dist',
+    'cdnify',
+    'cssmin',
     'uglify',
-    'injector:bowerMin',
-    'injector:dist',
-    'copy:index'
+    'rev',
+    'usemin'
+  ]);
+
+  grunt.registerTask('heroku', [
+    'build',
+    'clean:heroku',
+    'copy:heroku'    
   ]);
 
   grunt.registerTask('default', [
-    'jshint',
+    'newer:jshint',
+    'test',
     'build'
   ]);
 };
