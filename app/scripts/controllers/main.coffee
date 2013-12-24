@@ -3,7 +3,7 @@
 angular.module('hipsterdomainsApp')
   .controller 'MainCtrl', ['$scope', '$http', ($scope, $http) ->
 
-    $http.get('/api/121221').success (domains) ->
+    $http.get('/api/test').success (domains) ->
       $scope.domains = domains
 
 
