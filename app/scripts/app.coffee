@@ -10,7 +10,7 @@ angular.module('hipsterdomainsApp', [
     $routeProvider
       .when '/',
         templateUrl: 'partials/main'
-        controller: 'MainCtrl'
+        controller: 'mainCtrl'
       .otherwise
         redirectTo: '/'
     $locationProvider.html5Mode(true)

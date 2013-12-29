@@ -1,19 +1,30 @@
-describe 'Service: Suggestions', ->
-  suggestions = Availability = null
+angular.module('hipsterdomainsApp')
+  .factory 'Suggestions', (Availability,Suffix) ->
 
-  beforeEach module 'hipsterdomainsApp'
-  beforeEach inject (_Suggestions_,_Availability_) ->
-    Suggestions = _Suggestions_
-    Availability = _Availability_
-    Availability.check = jasmine.createSpy().andReturn()
-    suggestions = new Suggestions()
+    class Suggestions
 
-  it 'should be defined', ->
-    expect(suggestions).toBeDefined()
+      constructor: ->
+        @list = []
 
-  it 'should take search request and provide alternatives', ->
-    expect(suggestions.generate('test')).toContain 'testly', 'tests'
+      test: ->
+        console.log 'in suggestions'
 
-  it 'should check the Availability of alternatives', ->
-    suggestions.availability()
-    expect(Availability.check).toHaveBeenCalled()
+      generate: (name) ->
+        @_clear()
+        @_find name
+        @list
+
+      availability: ->
+        Availability.check()
+
+      _find: (name) ->
+        @list.push "#{name}#{suffix}" for suffix in @_suffixes()
+
+      _clear: ->
+        @list = []
+
+      _suffixes: ->
+        Suffix
+
+    new Suggestions()
+

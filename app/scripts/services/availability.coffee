@@ -10,3 +10,5 @@ angular.module('hipsterdomainsApp')
         $http.get("/api/#{name}").success (result) =>
           deferred.resolve result
         deferred.promise
+
+    new Availability()
