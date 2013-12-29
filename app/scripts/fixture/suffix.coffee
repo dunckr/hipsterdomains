@@ -1,5 +1,5 @@
 angular.module('hipsterdomainsApp')
-  .constant 'Suffix',
+  .constant 'suffix',
     [
       'a'
       'ah'

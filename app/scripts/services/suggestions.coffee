@@ -1,5 +1,5 @@
 angular.module('hipsterdomainsApp')
-  .factory 'suggestions', (Availability,Suffix) ->
+  .factory 'suggestions', (Availability,suffix) ->
 
     class Suggestions
 
@@ -21,7 +21,7 @@ angular.module('hipsterdomainsApp')
         @list = []
 
       _suffixes: ->
-        Suffix
+        suffix
 
     new Suggestions()
 
