@@ -7,23 +7,6 @@ angular.module('hipsterdomainsApp')
 
       check: (name) ->
         deferred = @$q.defer()
-        $http.get('/api/awesomeThings').success (result) =>
+        $http.get("/api/#{name}").success (result) =>
           deferred.resolve result
         deferred.promise
-
-      # request: (name) ->
-
-      # get: (id) ->
-      #   @_Domains @_constructUrl id
-
-      # _domains: (url) ->
-      #   deferred = @$q.defer()
-      #   @$http.jsonp(url).success (data) =>
-      #     deferred.resolve @_process data
-      #   deferred.promise
-
-      # _process: (data) ->
-      #   data
-
-      # _constructUrl: (id) ->
-      #   ''

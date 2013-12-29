@@ -1,20 +1,34 @@
 describe 'Service: Availability', ->
-  availability = $http = null
+  availability = $httpBackend = $rootScope = deferred = null
 
   beforeEach module 'hipsterdomainsApp'
-  beforeEach inject (_Availability_,_$http_,_$q_) ->
+  beforeEach inject (_Availability_,_$httpBackend_,_$q_,_$rootScope_) ->
+    $rootScope = _$rootScope_
     $q = _$q_
-    $http = _$http_
+    deferred = $q.defer()
+    $httpBackend = _$httpBackend_
+    $httpBackend.expectGET('/api/test').respond deferred.promise
     Availability = _Availability_
-    availability = new Availability $http, $q
+    availability = new Availability $httpBackend, $q
 
   it 'should be defined', ->
     expect(availability).toBeDefined()
 
   it 'should return true if domain is available', ->
-    expect(availability.check('123123asdasdz')).toBe true
+    result = null
+    deferred.resolve true
+    availability.check('test').then (data) ->
+      result = data
+    $httpBackend.flush()
 
-  it 'should return false if domain isn\'t available', ->
+    # result.then (data) ->
+    #   console.log data
+    $rootScope.$apply()
+    expect(result).toBe true
+
+  xit 'should return false if domain isn\'t available', ->
+    # $httpBackend.flush()
+
     expect(availability.check('test')).toBe false
 
 
