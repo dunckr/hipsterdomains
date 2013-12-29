@@ -11,5 +11,5 @@ describe 'Controller: MainCtrl', () ->
   it 'should initialize', ->
     expect(mainCtrl).toBeDefined()
 
-  it 'should request domain name', ->
-    expect(domains.request).toHaveBeenCalled()
+  # it 'should request domain name', ->
+  #   expect(domains.request).toHaveBeenCalled()
