@@ -37,6 +37,7 @@ module.exports = function(config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
 
+    reporters: ['progress','growl'],
 
     // Start these browsers, currently available:
     // - Chrome
