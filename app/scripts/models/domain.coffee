@@ -4,6 +4,6 @@ angular.module('hipsterdomainsApp')
     class Domain
 
       constructor: (@name) ->
-        @availablity = null
+        @availability = null
         availability.check(@name).then (result) =>
-          @availablity = result.availablity
+          @availability = result.availability

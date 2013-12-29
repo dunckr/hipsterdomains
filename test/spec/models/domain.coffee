@@ -1,10 +1,14 @@
 describe 'Model: Domain', () ->
-  domain = null
+  domain = availability = null
   beforeEach module 'hipsterdomainsApp'
 
-  beforeEach inject (_domain_) ->
+  beforeEach inject (_domain_,_availability_) ->
     Domain = _domain_
-    domain = new Domain()
+    availability = _availability_
+    domain = new Domain 'test'
 
-  it 'should be defined', ->
-    expect(domain).toBeDefined()
+  it 'should have a name', ->
+    expect(domain.name).toEqual 'test'
+
+  it 'should have availability initally null', ->
+    expect(domain.availability).toBe null
