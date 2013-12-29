@@ -2,12 +2,19 @@
 
 <section>
   <div class="row">
-    <div ng-repeat="domain in list">
-      <h3>{{domain}}</h3>
+    <div class="col-12" ng-repeat="domain in list">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title" ng-bind="domain.name"></h3>
+            <h2>{{domain.availability}}</h2>
+          </div>
+          <div class="panel-body" ng-bind="answer" ng-show="clicked">
+          </div>
+        </div>
+
     </div>
-    <!-- <div class="col-12" ng-repeat="(question,answer) in items track by $index"> -->
-      <!-- <question question="question" answer="answer"></question> -->
-    <!-- </div> -->
+
 </section>
 
 
@@ -23,49 +30,9 @@
   </form>
 </div>
 
-<!-- <section>
-  <div class="row">
-    <div class="col-6">
-      <h2>Instructions:</h2>
-      <ol>
-        <li>Make sure the Doc is shared. <a href="https://support.google.com/drive/answer/2494822?hl=en">Instructions here.</a></li>
-        <li>Copy the Doc URL into the search box above</li>
-      </ol>
-      <img src="images/docs.png" class="img-rounded" alt="Google Doc">
-    </div>
-  </div>
-</section>
+
+
 <div class="footer pull-right">
   <p><a href="http://dunckr.com">❤ dunckr</a></p>
-</div> -->
-
-
-<!-- <div class="header">
-  <ul class="nav nav-pills pull-right">
-    <li class="active"><a ng-href="#">Home</a></li>
-    <li><a ng-href="#">About</a></li>
-    <li><a ng-href="#">Contact</a></li>
-  </ul>
-  <h3 class="text-muted">hipsterdomains</h3>
 </div>
 
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!</a></p>
-</div>
-
-<div class="row marketing">
-  <div ng-repeat="thing in awesomeThings">
-      <h4>{{thing.name}}</h4>
-      <p>{{thing.info}}</p>
-  </div>
-</div>
-
-<div class="footer">
-  <p>♥ from the Yeoman team</p>
-</div>
- -->
