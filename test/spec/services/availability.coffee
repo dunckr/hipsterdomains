@@ -2,13 +2,13 @@ describe 'Service: Availability', ->
   availability = $httpBackend = $rootScope = deferred = result = null
 
   beforeEach module 'hipsterdomainsApp'
-  beforeEach inject (_Availability_,_$httpBackend_,_$q_,_$rootScope_) ->
+  beforeEach inject (_availability_,_$httpBackend_,_$q_,_$rootScope_) ->
     $rootScope = _$rootScope_
     $q = _$q_
     deferred = $q.defer()
     $httpBackend = _$httpBackend_
     $httpBackend.expectGET('/api/test').respond deferred.promise
-    availability = _Availability_
+    availability = _availability_
     availability.check('test').then (data) ->
       result = data
 

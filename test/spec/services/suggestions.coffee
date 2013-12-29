@@ -1,11 +1,11 @@
 describe 'Service: Suggestions', ->
-  suggestions = Availability = null
+  suggestions = availability = null
 
   beforeEach module 'hipsterdomainsApp'
-  beforeEach inject (_suggestions_,_Availability_) ->
+  beforeEach inject (_suggestions_,_availability_) ->
     suggestions = _suggestions_
-    Availability = _Availability_
-    Availability.check = jasmine.createSpy().andReturn()
+    availability = _availability_
+    availability.check = jasmine.createSpy().andReturn()
 
   it 'should be defined', ->
     expect(suggestions).toBeDefined()
@@ -15,4 +15,4 @@ describe 'Service: Suggestions', ->
 
   it 'should check the Availability of alternatives', ->
     suggestions.availability()
-    expect(Availability.check).toHaveBeenCalled()
+    expect(availability.check).toHaveBeenCalled()

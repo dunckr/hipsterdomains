@@ -1,5 +1,5 @@
 angular.module('hipsterdomainsApp')
-  .factory 'suggestions', (Availability,suffix) ->
+  .factory 'suggestions', (availability,suffix) ->
 
     class Suggestions
 
@@ -12,7 +12,7 @@ angular.module('hipsterdomainsApp')
         @list
 
       availability: ->
-        Availability.check()
+        availability.check()
 
       _find: (name) ->
         @list.push "#{name}#{suffix}" for suffix in @_suffixes()

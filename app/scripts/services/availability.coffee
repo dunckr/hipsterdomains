@@ -1,5 +1,5 @@
 angular.module('hipsterdomainsApp')
-  .factory 'Availability', ($http,$q) ->
+  .factory 'availability', ($http,$q) ->
 
     class Availability
 
