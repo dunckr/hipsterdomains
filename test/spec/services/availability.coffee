@@ -8,8 +8,7 @@ describe 'Service: Availability', ->
     deferred = $q.defer()
     $httpBackend = _$httpBackend_
     $httpBackend.expectGET('/api/test').respond deferred.promise
-    Availability = _Availability_
-    availability = new Availability $httpBackend, $q
+    availability = _Availability_
     availability.check('test').then (data) ->
       result = data
 

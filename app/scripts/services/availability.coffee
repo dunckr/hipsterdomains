@@ -11,4 +11,4 @@ angular.module('hipsterdomainsApp')
           deferred.resolve result
         deferred.promise
 
-    new Availability()
+    new Availability $http, $q

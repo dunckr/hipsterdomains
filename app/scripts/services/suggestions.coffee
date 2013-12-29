@@ -6,9 +6,6 @@ angular.module('hipsterdomainsApp')
       constructor: ->
         @list = []
 
-      test: ->
-        console.log 'in suggestions'
-
       generate: (name) ->
         @_clear()
         @_find name
