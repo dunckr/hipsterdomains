@@ -2,10 +2,10 @@ describe 'Controller: MainCtrl', () ->
   controller = scope = suggestions = null
 
   beforeEach module 'hipsterdomainsApp'
-  beforeEach inject ($controller, _$rootScope_,_Suggestions_) ->
+  beforeEach inject ($controller, _$rootScope_,_suggestions_) ->
     $rootScope = _$rootScope_
     scope = $rootScope.$new()
-    suggestions = _Suggestions_
+    suggestions = _suggestions_
     suggestions.generate = jasmine.createSpy().andReturn()
     controller = $controller 'MainCtrl',
       $scope: scope

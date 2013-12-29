@@ -1,5 +1,5 @@
 angular.module('hipsterdomainsApp')
-  .factory 'Suggestions', (Availability,Suffix) ->
+  .factory 'suggestions', (Availability,Suffix) ->
 
     class Suggestions
 

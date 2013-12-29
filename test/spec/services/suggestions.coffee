@@ -2,8 +2,8 @@ describe 'Service: Suggestions', ->
   suggestions = Availability = null
 
   beforeEach module 'hipsterdomainsApp'
-  beforeEach inject (_Suggestions_,_Availability_) ->
-    suggestions = _Suggestions_
+  beforeEach inject (_suggestions_,_Availability_) ->
+    suggestions = _suggestions_
     Availability = _Availability_
     Availability.check = jasmine.createSpy().andReturn()
 
