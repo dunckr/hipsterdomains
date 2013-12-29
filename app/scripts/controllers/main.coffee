@@ -1,6 +1,9 @@
 class MainCtrl
 
-  constructor: (@$scope) ->
+  constructor: (@$scope, @suggestions) ->
+    @$scope.name = 'startup'
+    @$scope.search = =>
+      @$scope.list = @suggestions.generate @$scope.name
 
 angular.module('hipsterdomainsApp')
-  .controller 'mainCtrl', ['$scope',MainCtrl]
+  .controller 'mainCtrl', ['$scope','Suggestions',MainCtrl]
