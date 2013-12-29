@@ -7,6 +7,9 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title" ng-bind="domain.name"></h3>
+            <i class="fa fa-spinner fa-spin"></i>
+            <i class="fa fa-thumbs-up"></i>
+            <i class="fa fa-thumbs-down"></i>
             <h2>{{domain.availability}}</h2>
           </div>
           <div class="panel-body" ng-bind="answer" ng-show="clicked">
@@ -19,20 +22,26 @@
 
 
 <div class="page-header">
-<!--   <h1>Quizington</h1>
-  <p class="lead">Revise questions and answers</p>
-  <p>Access your existing notes in Google Docs or GitHub gists</p>
- -->
-    <form name="form" class="form-signin" ng-submit="search()">
-    <!-- <h3>Paste your link here</h3> -->
+  <h1>hipster domains</h1>
+  <p class="lead">adsf</p>
+  <p>afasf</p>
+
+  <form name="form" class="form-signin" ng-submit="search()">
+  <!-- <h3>Paste your link here</h3> -->
+<!--     <input type="text" class="form-control" name="name" ng-model="name" required autofocus/>
+    <button type="submit" class="btn btn-lg btn-primary btn-block">search</button>
+ -->  
+    <div class="input-group margin-bottom-sm">
       <input type="text" class="form-control" name="name" ng-model="name" required autofocus/>
-      <button type="submit" class="btn btn-lg btn-primary btn-block">Practise!</button>
+      <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+    </div>
+
   </form>
 </div>
 
 
 
 <div class="footer pull-right">
-  <p><a href="http://dunckr.com">❤ dunckr</a></p>
+  <p><a href="http://twitter.com/dunckr">❤ @dunckr</a></p>
 </div>
 

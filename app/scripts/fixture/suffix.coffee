@@ -25,4 +25,6 @@ angular.module('hipsterdomainsApp')
       'ion'
       'ly'
       'ify'
+      'ic'
+      'app'
     ]
