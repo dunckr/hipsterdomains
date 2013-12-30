@@ -1,47 +1,34 @@
-<!-- <div>{{list}}</div> -->
+<div class="page-header">
+  <h1>Hipster Domains<small>.com</small></h1>
+  <form name="form" class="form-signin" ng-submit="search()">
+    <div class="input-group margin-bottom-sm">
+      <input type="text" class="form-control" name="name" ng-model="name" required autofocus/>
+      <span class="input-group-addon" ng-click="search()"><i class="fa fa-search fa-fw"></i></span>
+    </div>
+  </form>
+</div>
 
 <section>
   <div class="row">
     <div class="col-12" ng-repeat="domain in list">
-
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title" ng-bind="domain.name"></h3>
-            <i class="fa fa-spinner fa-spin"></i>
-            <i class="fa fa-thumbs-up"></i>
-            <i class="fa fa-thumbs-down"></i>
-            <h2>{{domain.availability}}</h2>
+            <h2 class="panel-title" >
+              <div ng-bind="domain.name"></div>
+              <small>.com</small>
+            </h2>
+            <div class="pull-right">
+              <i ng-class="{'fa fa-spinner fa-spin': domain.availability==null}"></i>
+              <i ng-class="{'fa fa-thumbs-up': domain.availability==true}"></i>
+              <i ng-class="{'fa fa-thumbs-down': domain.availability==false}"></i>
+            </div>
           </div>
           <div class="panel-body" ng-bind="answer" ng-show="clicked">
           </div>
         </div>
-
     </div>
-
 </section>
-
-
-<div class="page-header">
-  <h1>hipster domains</h1>
-  <p class="lead">adsf</p>
-  <p>afasf</p>
-
-  <form name="form" class="form-signin" ng-submit="search()">
-  <!-- <h3>Paste your link here</h3> -->
-<!--     <input type="text" class="form-control" name="name" ng-model="name" required autofocus/>
-    <button type="submit" class="btn btn-lg btn-primary btn-block">search</button>
- -->  
-    <div class="input-group margin-bottom-sm">
-      <input type="text" class="form-control" name="name" ng-model="name" required autofocus/>
-      <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-    </div>
-
-  </form>
-</div>
-
-
 
 <div class="footer pull-right">
   <p><a href="http://twitter.com/dunckr">❤ @dunckr</a></p>
 </div>
-
