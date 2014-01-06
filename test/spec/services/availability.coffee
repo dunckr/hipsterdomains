@@ -11,6 +11,8 @@ describe 'Service: Availability', ->
     availability = _availability_
     availability.check('test').then (data) ->
       result = data
+    , (reason) ->
+      result = reason
 
   it 'should return true if domain is available', ->
     deferred.resolve true
@@ -23,3 +25,9 @@ describe 'Service: Availability', ->
     $httpBackend.flush()
     $rootScope.$apply()
     expect(result).toBe false
+
+  it 'should return false if request rejected', ->
+    deferred.reject null
+    $httpBackend.flush()
+    $rootScope.$apply()
+    expect(result).toBe null
