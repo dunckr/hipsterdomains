@@ -11,9 +11,9 @@ class MainCtrl
 
     @$scope.loadMore = =>
       return false unless @searching
-      # if @counter <= @$scope.list.length
-      @$scope.list[@counter].check()
-      @counter++
+      if @counter < @$scope.list.length
+        @$scope.list[@counter].check()
+        @counter++
 
   _defaults: ->
     @searching = false

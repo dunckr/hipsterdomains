@@ -60,17 +60,15 @@ describe 'Controller: MainCtrl', () ->
     it 'should check the next suggestion', ->
       expect(scope.list[0].check).toHaveBeenCalled()
 
-  # describe 'if no more in list', ->
+  describe 'if no more in list', ->
 
-  #   beforeEach ->
-  #     scope.search()
-  #     scope.loadMore()
-  #     scope.loadMore()
+    beforeEach ->
+      scope.search()
+      scope.loadMore()
+      scope.loadMore()
 
-  #   it 'should should stop incrementing the counter', ->
-  #     expect(controller.counter).toEqual 1
-
-
+    it 'should should stop incrementing the counter', ->
+      expect(controller.counter).toEqual 1
 
 
   # describe 'find suggestions', ->
