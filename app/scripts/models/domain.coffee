@@ -8,5 +8,4 @@ angular.module('hipsterdomainsApp')
 
       check: ->
         availability.check(@name).then (result) =>
-          console.log result
           @availability = result.availability
