@@ -33,3 +33,12 @@ describe 'GET /api/:id', ->
         expect(res.body.availability).to.not.be.ok()
         done()
 
+  it 'should only accept text and numbers', (done) ->
+    request(app)
+      .get('/api/te.st')
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end (err,res) ->
+        return done err if err
+        expect(res.body.availability).to.not.be.ok()
+        done()
