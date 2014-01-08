@@ -1,4 +1,4 @@
-describe 'Controller: MainCtrl', () ->
+ddescribe 'Controller: MainCtrl', () ->
   controller = scope = suggestions = null
 
   beforeEach module 'hipsterdomainsApp'
@@ -6,10 +6,7 @@ describe 'Controller: MainCtrl', () ->
     $rootScope = _$rootScope_
     scope = $rootScope.$new()
     suggestions = _suggestions_
-    results = [
-      name:'one',check: jasmine.createSpy().andReturn true
-    ]
-    suggestions.generate = jasmine.createSpy().andReturn results
+    spyOn(suggestions,'generate').andCallThrough()
     controller = $controller 'MainCtrl',
       $scope: scope
       suggestions: suggestions
@@ -45,11 +42,11 @@ describe 'Controller: MainCtrl', () ->
     it 'should reset the counter', ->
       expect(controller.counter).toEqual 0
 
-    it 'should request suggestions to generate list', ->
+    it 'should use suggestions to generate list', ->
       expect(suggestions.generate).toHaveBeenCalled()
 
     it 'should save the results in list', ->
-      expect(scope.list.length).toBe 1
+      expect(scope.list.length).toBe 5
 
   describe 'on load more after searched', ->
 
@@ -60,15 +57,5 @@ describe 'Controller: MainCtrl', () ->
     it 'should increase the counter', ->
       expect(controller.counter).toEqual 1
 
-    it 'should check the next suggestion', ->
-      expect(scope.list[0].check).toHaveBeenCalled()
-
-  describe 'if no more in list', ->
-
-    beforeEach ->
-      scope.search()
-      scope.loadMore()
-      scope.loadMore()
-
-    it 'should should stop incrementing the counter', ->
-      expect(controller.counter).toEqual 1
+    it 'should save the next results in list', ->
+      expect(scope.list.length).toBe 10

@@ -11,6 +11,16 @@ angular.module('hipsterdomainsApp')
         @_find name
         @list
 
+      next: (index) ->
+        index *= 5
+        sublist = @list[index..index+4]
+        @_check sublist
+        sublist
+
+      _check: (sublist) ->
+        for item in sublist
+          item.check()
+
       _find: (name) ->
         for suffix in @_suffixes()
           @list.push new domain "#{name}#{suffix}"

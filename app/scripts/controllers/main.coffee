@@ -8,13 +8,13 @@ class MainCtrl
     @$scope.search = =>
       @_reset()
       @searching = true
-      @$scope.list = @suggestions.generate @$scope.name
+      @suggestions.generate @$scope.name
+      @$scope.list.push.apply @$scope.list, @suggestions.next @counter
 
     @$scope.loadMore = =>
       return false unless @searching
-      if @counter < @$scope.list.length
-        @$scope.list[@counter].check()
-        @counter++
+      @counter++
+      @$scope.list.push.apply @$scope.list, @suggestions.next @counter
 
   _defaults: ->
     @searching = false
