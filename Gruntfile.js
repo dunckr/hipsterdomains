@@ -41,6 +41,14 @@ module.exports = function (grunt) {
         }
       }
     },
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec',
+        },
+        src: ['spec/**/*.coffee']
+      }
+    },
     open: {
       server: {
         url: 'http://localhost:<%= express.options.port %>'
@@ -465,4 +473,6 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask('mocha', 'mochaTest');
 };
