@@ -1,4 +1,4 @@
-ddescribe 'Controller: MainCtrl', () ->
+describe 'Controller: MainCtrl', () ->
   controller = scope = suggestions = null
 
   beforeEach module 'hipsterdomainsApp'
