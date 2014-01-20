@@ -1,14 +1,14 @@
-<!-- <img src="/images/background.png" alt=""> -->
-
-<div class="page-header" style='background-image:url(/images/background.png); background-repeat:repeat'>
-  <h1>Hipster Domains<small>.com</small></h1>
+<div class="page-header">
   <div class="pull-right">
-    <p><a href="http://twitter.com/dunckr">❤ @dunckr</a></p>
+    <p><a href="http://twitter.com/dunckr">@dunckr</a></p>
   </div>
-  <form name="form" class="form-signin" ng-submit="search()">
+  <div class="row text-center">
+    <img class="logo" src="/images/logo.png" alt="smart">
+  </div>
+  <form name="form" class="form-signin col-6" ng-submit="search()">
     <div class="input-group margin-bottom-sm">
       <input type="text" class="form-control" name="name" ng-model="name" required autofocus/>
-      <span class="input-group-addon" ng-click="search()"><i class="fa fa-search fa-fw"></i></span>
+      <span class="input-group-addon search" ng-click="search()"><i class="fa fa-search fa-fw"></i></span>
     </div>
   </form>
 </div>

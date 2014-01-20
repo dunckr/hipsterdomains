@@ -12,31 +12,18 @@ angular.module('hipsterdomainsApp')
           <i ng-class="{\'fa fa-thumbs-down fa-3x unavailable\': domain.availability==false}"></i>
           <h3 class="panel-title name">{{domain.name}}<small>.com</small></h3>
         </div>
-        <div class="panel-body" ng-show="clicked">
-            <button type="button" class="btn btn-default">Default</button>
-            <button type="button" class="btn btn-default">Default</button>
+        <div class="panel-body link" ng-show="clicked">
+            <button type="button" class="btn btn-labeled btn-info">
+              <span class="btn-label">
+                <i class="fa fa-arrow-circle-o-right fa-2x"></i>
+              </span>
+              <h4>Success</h4>
+            </button>
         </div>
       </div>
     '
     link: ($scope, element, attrs) ->
         element.bind 'click', (event) =>
+          # console.log $scope.domain
           $scope.clicked = true
           $scope.$apply()
-
-
-        # <div class="panel panel-default">
-        #   <div class="panel-heading">
-        #     <h2 class="panel-title" >{{domain.name}}<small>.com</small></h2>
-        #     <div class="pull-right">
-        #       <i ng-class="{'fa fa-spinner fa-spin fa-3x': domain.availability==null}"></i>
-        #       <i ng-class="{'fa fa-thumbs-up fa-3x': domain.availability==true}"></i>
-        #       <i ng-class="{'fa fa-thumbs-down fa-3x': domain.availability==false}"></i>
-        #     </div>
-        #   </div>
-        #   <div class="panel-body">
-            # <button type="button" class="btn btn-default">Default</button>
-            # <button type="button" class="btn btn-default">Default</button>
-        #     <button type="button" class="btn btn-default">Default</button>
-        #     <button type="button" class="btn btn-default">Default</button>
-        #   </div>
-        # </div>
